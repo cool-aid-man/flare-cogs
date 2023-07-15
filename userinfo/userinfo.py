@@ -315,6 +315,7 @@ class Userinfo(commands.Cog):
             flags = [f.name for f in user.public_flags.all()]
             badges = ""
             badge_count = 0
+            special_badge = ""
             if flags:
                 for badge in sorted(flags):
                     if badge == "verified_bot":
@@ -340,7 +341,7 @@ class Userinfo(commands.Cog):
                     else:
                         special_badge += f"\N{BLACK QUESTION MARK ORNAMENT}\N{VARIATION SELECTOR-16} {specific_role.name}\n"
                     badge_count += 1
-                    
+
             if special_badge:
                 data.add_field(name="Special Badge", value=special_badge)
 
