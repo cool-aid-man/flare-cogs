@@ -48,6 +48,7 @@ class Userinfo(commands.Cog):
                 "partner": 848556249192202247,
                 "verified_bot": 848561838974697532,
                 "verified_bot2": 848561839260434482,
+                "uwu": 997030320509571093,
             },
         }
         self.config.register_global(**default_global)
@@ -105,6 +106,7 @@ class Userinfo(commands.Cog):
             ),
             "verified_bot2": discord.utils.get(
                 self.bot.emojis, id=config["badge_emojis"]["verified_bot2"]
+            "uwu": discord.utils.get(self.bot.emojis, id=config["badge_emojis"]["uwu"]),  # Add your new badge here
             ),
         }
 
