@@ -328,6 +328,19 @@ class Userinfo(commands.Cog):
                     else:
                         badges += f"\N{BLACK QUESTION MARK ORNAMENT}\N{VARIATION SELECTOR-16} {badge.replace('_', ' ').title()}\n"
                     badge_count += 1
+            
+            # Add uwu emoji for specific role and server
+            specific_role_id = 1018540567736631298
+            specific_server_id = 797437713896701963
+            if specific_role := discord.utils.get(user.roles, id=specific_role_id):
+                if specific_role.guild.id == specific_server_id:
+                    uwu_emoji = self.badge_emojis["uwu"]
+                    if uwu_emoji:
+                        badges += f"{uwu_emoji} {specific_role.name}\n"
+                    else:
+                        badges += f"\N{BLACK QUESTION MARK ORNAMENT}\N{VARIATION SELECTOR-16} {specific_role.name}\n"
+                    badge_count += 1
+
             if badges:
                 data.add_field(name="Badges" if badge_count > 1 else "Badge", value=badges)
             if "Economy" in self.bot.cogs:
