@@ -106,8 +106,9 @@ class Userinfo(commands.Cog):
             ),
             "verified_bot2": discord.utils.get(
                 self.bot.emojis, id=config["badge_emojis"]["verified_bot2"]
-            "uwu": discord.utils.get(self.bot.emojis, id=config["badge_emojis"]["uwu"]),  # Add your new badge here
             ),
+            "uwu": discord.utils.get(self.bot.emojis, id=config["badge_emojis"]["uwu"]),  # Add your new badge here
+
         }
 
     async def red_get_data_for_user(self, *, user_id: int):
