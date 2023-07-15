@@ -64,6 +64,10 @@ class Userinfo(commands.Cog):
 
     async def gen_emojis(self):
         config = await self.config.all()
+
+        uwu_emoji_id = config["badge_emojis"]["uwu"]
+        uwu_emoji = discord.utils.get(self.bot.emojis, id=uwu_emoji_id)
+
         self.status_emojis = {
             "mobile": discord.utils.get(self.bot.emojis, id=config["status_emojis"]["mobile"]),
             "online": discord.utils.get(self.bot.emojis, id=config["status_emojis"]["online"]),
@@ -107,9 +111,7 @@ class Userinfo(commands.Cog):
             "verified_bot2": discord.utils.get(
                 self.bot.emojis, id=config["badge_emojis"]["verified_bot2"]
             ),
-            "uwu": discord.utils.get(
-                self.bot.emojis, id=config["badge_emojis"]["uwu"]
-            ),
+            "uwu": uwu_emoji,
         }
 
     async def red_get_data_for_user(self, *, user_id: int):
