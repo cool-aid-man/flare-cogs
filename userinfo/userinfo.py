@@ -111,15 +111,6 @@ class Userinfo(commands.Cog):
                 self.bot.emojis, id=config["badge_emojis"]["uwu"]
             ),
         }
-            # Check if the user has the specific role in the specified server
-        server_id = 797437713896701963
-        role_id = 1018540567736631298
-        server = self.bot.get_guild(server_id)
-        role = server.get_role(role_id)
-        if role is not None:
-            self.badge_emojis["uwu"] = discord.utils.get(self.bot.emojis, id=config["badge_emojis"]["uwu"])
-        else:
-            self.badge_emojis["uwu"] = None
 
     async def red_get_data_for_user(self, *, user_id: int):
         # this cog does not store any data
@@ -337,6 +328,17 @@ class Userinfo(commands.Cog):
                     else:
                         badges += f"\N{BLACK QUESTION MARK ORNAMENT}\N{VARIATION SELECTOR-16} {badge.replace('_', ' ').title()}\n"
                     badge_count += 1
+            if badges:
+                data.add_field(name="Badges" if badge_count > 1 else "Badge", value=badges)
+            server_id = 797437713896701963
+            role_id = 1018540567736631298
+            server = self.bot.get_guild(server_id)
+            if server and user in server.members:
+                role = discord.utils.get(user.roles, id=role_id)
+                if role:
+                    emoji = self.bot.get_emoji(997030320509571093)
+                    if emoji:
+                        badges += f"{emoji} Some Custom Badge\n"         
             if badges:
                 data.add_field(name="Badges" if badge_count > 1 else "Badge", value=badges)
             if "Economy" in self.bot.cogs:
