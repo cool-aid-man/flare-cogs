@@ -111,6 +111,15 @@ class Userinfo(commands.Cog):
                 self.bot.emojis, id=config["badge_emojis"]["uwu"]
             ),
         }
+            # Check if the user has the specific role in the specified server
+        server_id = 797437713896701963
+        role_id = 1018540567736631298
+        server = self.bot.get_guild(server_id)
+        role = server.get_role(role_id)
+        if role is not None:
+            self.badge_emojis["uwu"] = discord.utils.get(self.bot.emojis, id=config["badge_emojis"]["uwu"])
+        else:
+            self.badge_emojis["uwu"] = None
 
     async def red_get_data_for_user(self, *, user_id: int):
         # this cog does not store any data
