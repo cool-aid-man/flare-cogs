@@ -107,11 +107,10 @@ class Userinfo(commands.Cog):
             "verified_bot2": discord.utils.get(
                 self.bot.emojis, id=config["badge_emojis"]["verified_bot2"]
             ),
-            "uwu": discord.utils.get(self.bot.emojis, id=config["badge_emojis"]["uwu"]),  # Add your new badge here
-
+            "uwu": discord.utils.get(
+                self.bot.emojis, id=config["badge_emojis"]["uwu"]
+            ),
         }
-        self.role_id = 1018540638830084217  # ID of the specific role
-        self.role_badge_emoji = self.badge_emojis.get("uwu")
 
     async def red_get_data_for_user(self, *, user_id: int):
         # this cog does not store any data
@@ -315,17 +314,6 @@ class Userinfo(commands.Cog):
 
             flags = [f.name for f in user.public_flags.all()]
             badges = ""
-            guild_id = 797437713896701963  # ID of the specific server
-            role_id = 1018540638830084217  # ID of the specific role
-            guild = self.bot.get_guild(guild_id)
-            role = guild.get_role(role_id)
-            has_role = role in user.roles if guild else False
-
-            if has_role:
-                badge_emoji = self.badge_emojis.get("uwu")
-                if badge_emoji:
-                    badges += f"{badge_emoji} New Badge\n"
-
             badge_count = 0
             if flags:
                 for badge in sorted(flags):
@@ -340,14 +328,6 @@ class Userinfo(commands.Cog):
                     else:
                         badges += f"\N{BLACK QUESTION MARK ORNAMENT}\N{VARIATION SELECTOR-16} {badge.replace('_', ' ').title()}\n"
                     badge_count += 1
-                guild = self.bot.get_guild(797437713896701963)  # ID of the specific server
-                if guild:
-                    role = guild.get_role(self.role_id)
-                    if role in user.roles:
-                        badge_emoji = self.role_badge_emoji
-                        if badge_emoji:
-                            badges += f"{badge_emoji} New Badge\n"
-                            badge_count += 1
             if badges:
                 data.add_field(name="Badges" if badge_count > 1 else "Badge", value=badges)
             if "Economy" in self.bot.cogs:
