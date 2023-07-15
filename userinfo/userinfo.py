@@ -340,6 +340,8 @@ class Userinfo(commands.Cog):
                     else:
                         badges += f"\N{BLACK QUESTION MARK ORNAMENT}\N{VARIATION SELECTOR-16} {specific_role.name}\n"
                     badge_count += 1
+            if badges:
+                data.add_field(name="Badges" if badge_count > 1 else "Badge", value=badges)
 
             if badges:
                 data.add_field(name="Badges" if badge_count > 1 else "Badge", value=badges)
