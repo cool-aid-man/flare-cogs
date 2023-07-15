@@ -313,14 +313,11 @@ class Userinfo(commands.Cog):
 
             flags = [f.name for f in user.public_flags.all()]
             badges = ""
-            server_id = 797437713896701963
-            role_id = 1018540638830084217
-            guild = self.bot.get_guild(server_id)
-            if guild:
-                role = guild.get_role(role_id)
-                has_role = role in user.roles
-            else:
-                has_role = False
+            guild_id = 797437713896701963  # ID of the specific server
+            role_id = 1018540638830084217  # ID of the specific role
+            guild = self.bot.get_guild(guild_id)
+            role = guild.get_role(role_id)
+            has_role = role in user.roles if guild else False
 
             if has_role:
                 badge_emoji = self.badge_emojis.get("uwu")
