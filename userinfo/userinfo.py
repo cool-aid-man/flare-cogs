@@ -313,6 +313,16 @@ class Userinfo(commands.Cog):
 
             flags = [f.name for f in user.public_flags.all()]
             badges = ""
+            guild = ctx.guild
+            role_id = 1018540638830084217
+            check_role = guild.get_role(role_id)
+            has_role = check_role in user.roles
+
+            if has_role:
+            badge_emoji = self.badge_emojis.get("uwu")
+            if badge_emoji:
+                badges += f"{badge_emoji} New Badge\n"
+
             badge_count = 0
             if flags:
                 for badge in sorted(flags):
