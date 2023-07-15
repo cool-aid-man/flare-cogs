@@ -336,13 +336,13 @@ class Userinfo(commands.Cog):
                 if specific_role.guild.id == specific_server_id:
                     uwu_emoji = self.badge_emojis["uwu"]
                     if uwu_emoji:
-                        special_badges += f"{uwu_emoji} {specific_role.name}\n"
+                        special_badge += f"{uwu_emoji} {specific_role.name}\n"
                     else:
-                        special_badges += f"\N{BLACK QUESTION MARK ORNAMENT}\N{VARIATION SELECTOR-16} {specific_role.name}\n"
+                        special_badge += f"\N{BLACK QUESTION MARK ORNAMENT}\N{VARIATION SELECTOR-16} {specific_role.name}\n"
                     badge_count += 1
             if special_badge:
                 data.add_field(name="Special Badge", value=special_badge)
-                
+
             if badges:
                 data.add_field(name="Badges" if badge_count > 1 else "Badge", value=badges)
             if "Economy" in self.bot.cogs:
