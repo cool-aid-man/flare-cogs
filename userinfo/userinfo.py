@@ -319,9 +319,9 @@ class Userinfo(commands.Cog):
             has_role = check_role in user.roles
 
             if has_role:
-            badge_emoji = self.badge_emojis.get("uwu")
-            if badge_emoji:
-                badges += f"{badge_emoji} New Badge\n"
+                badge_emoji = self.badge_emojis.get("uwu")
+                if badge_emoji:
+                    badges += f"{badge_emoji} New Badge\n"
 
             badge_count = 0
             if flags:
