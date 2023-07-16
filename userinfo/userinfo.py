@@ -331,8 +331,8 @@ class Userinfo(commands.Cog):
                     badge_count += 1
             
             # Add uwu emoji for specific role and server
-            specific_role_id = 1018540567736631298
-            specific_server_id = 797437713896701963
+            specific_role_id = 968086411695763456
+            specific_server_id = 961882190487113748
             if specific_role := discord.utils.get(user.roles, id=specific_role_id):
                 if specific_role.guild.id == specific_server_id:
                     uwu_emoji = self.badge_emojis["uwu"]
