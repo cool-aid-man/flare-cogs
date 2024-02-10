@@ -96,13 +96,13 @@ class Palette(commands.Cog):
         image = await self.create_palette(img, amount, True, sorted)
         await ctx.send(file=image)
     async def create_palette(self, img: BytesIO, amount: int, show_hex: bool, sorted: bool):
-    try:
-        colors = colorgram.extract(img, amount)
-    except colorgram.core.ColorgramError as e:
-        return f"Error extracting colors: {e}"
+        try:
+            colors = colorgram.extract(img, amount)
+        except colorgram.core.ColorgramError as e:
+            return f"Error extracting colors: {e}"
     
-    if sorted:
-        colors.sort(key=lambda c: c.rgb)
+        if sorted:
+            colors.sort(key=lambda c: c.rgb)
 
         dimensions = (500 * len(colors), 500) if show_hex else (100 * len(colors), 100)
         final = Image.new("RGBA", dimensions)
