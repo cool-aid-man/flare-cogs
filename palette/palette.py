@@ -5,7 +5,7 @@ from typing import Optional
 import aiohttp
 import colorgram
 import discord
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, UnidentifiedImageError
 from redbot.core import commands
 from redbot.core.data_manager import bundled_data_path
 
@@ -69,8 +69,13 @@ class Palette(commands.Cog):
             img = await self.get_img(ctx, str(img))
         if isinstance(img, dict):
             return await ctx.send(img["error"])
-        image = await self.create_palette(img, amount, False, sorted)
-        await ctx.send(file=image)
+        try:
+            image = await self.create_palette(img, amount, False, sorted)
+            await ctx.send(file=image)
+        except UnidentifiedImageError:
+            await ctx.send("Error: Only .png and .jpg images are accepted.")
+        except Exception as e:
+            await ctx.send(f"Error: {e}")
 
     @commands.command()
     async def hexpalette(
@@ -93,18 +98,16 @@ class Palette(commands.Cog):
             img = await self.get_img(ctx, str(img))
         if isinstance(img, dict):
             return await ctx.send(img["error"])
-        image = await self.create_palette(img, amount, True, sorted)
-        await ctx.send(file=image)
+        try:
+            image = await self.create_palette(img, amount, True, sorted)
+            await ctx.send(file=image)
+        except UnidentifiedImageError:
+            await ctx.send("Error: Only .png and .jpg images are accepted.")
+        except Exception as e:
+            await ctx.send(f"Error: {e}")
 
     async def create_palette(self, img: BytesIO, amount: int, show_hex: bool, sorted: bool):
-        try:
-            colors = colorgram.extract(img, amount)
-        except Exception as e:
-            error_message = f"Error extracting colors: {e}"
-            file_obj = BytesIO(error_message.encode())
-            file_obj.name = "error.txt"
-            return discord.File(file_obj)
-
+        colors = colorgram.extract(img, amount)
         if sorted:
             colors.sort(key=lambda c: c.rgb)
 
@@ -130,8 +133,8 @@ class Palette(commands.Cog):
                 )
             start = start + dimensions[1]
         final = final.resize((500 * len(colors), 500), resample=Image.ANTIALIAS)
-        file_obj = BytesIO()
-        final.save(file_obj, "png")
-        file_obj.name = "palette.png"
-        file_obj.seek(0)
-        return discord.File(file_obj)
+        fileObj = BytesIO()
+        final.save(fileObj, "png")
+        fileObj.name = "palette.png"
+        fileObj.seek(0)
+        return discord.File(fileObj)
