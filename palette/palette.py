@@ -11,7 +11,6 @@ from redbot.core.data_manager import bundled_data_path
 
 from .converters import ImageFinder
 
-
 class Palette(commands.Cog):
     """
     This is a collection of commands that are used to show colour palettes.
@@ -95,12 +94,13 @@ class Palette(commands.Cog):
             return await ctx.send(img["error"])
         image = await self.create_palette(img, amount, True, sorted)
         await ctx.send(file=image)
+
     async def create_palette(self, img: BytesIO, amount: int, show_hex: bool, sorted: bool):
         try:
             colors = colorgram.extract(img, amount)
-        except colorgram.core.ColorgramError as e:
+        except Exception as e:
             return f"Error extracting colors: {e}"
-    
+        
         if sorted:
             colors.sort(key=lambda c: c.rgb)
 
