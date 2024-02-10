@@ -5,11 +5,12 @@ from typing import Optional
 import aiohttp
 import colorgram
 import discord
-from PIL import Image, ImageDraw, ImageFile, ImageFont
+from PIL import Image, ImageDraw, ImageFont
 from redbot.core import commands
 from redbot.core.data_manager import bundled_data_path
 
 from .converters import ImageFinder
+
 
 class Palette(commands.Cog):
     """
@@ -99,8 +100,11 @@ class Palette(commands.Cog):
         try:
             colors = colorgram.extract(img, amount)
         except Exception as e:
-            return f"Error extracting colors: {e}"
-        
+            error_message = f"Error extracting colors: {e}"
+            file_obj = BytesIO(error_message.encode())
+            file_obj.name = "error.txt"
+            return discord.File(file_obj)
+
         if sorted:
             colors.sort(key=lambda c: c.rgb)
 
@@ -126,8 +130,8 @@ class Palette(commands.Cog):
                 )
             start = start + dimensions[1]
         final = final.resize((500 * len(colors), 500), resample=Image.ANTIALIAS)
-        fileObj = BytesIO()
-        final.save(fileObj, "png")
-        fileObj.name = "palette.png"
-        fileObj.seek(0)
-        return discord.File(fileObj)
+        file_obj = BytesIO()
+        final.save(file_obj, "png")
+        file_obj.name = "palette.png"
+        file_obj.seek(0)
+        return discord.File(file_obj)
