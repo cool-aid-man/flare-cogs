@@ -9,7 +9,7 @@ from redbot.core.utils.predicates import MessagePredicate
 
 
 class Cashdrop(commands.Cog):
-    __version__ = "0.2.0"
+    __version__ = "0.2.2"
     __author__ = "flare(flare#0001)"
 
     def format_help_for_context(self, ctx):
@@ -91,8 +91,10 @@ class Cashdrop(commands.Cog):
             string, answer = self.random_calc()
             msg = await channel.send(string)
             try:
-                pred = MessagePredicate.lower_contained_in(str(answer), channel=channel, user=None)
-                await self.bot.wait_for("message", check=pred, timeout=10)
+                pred = MessagePredicate.equal_to(str(answer), channel=channel, user=None)
+                answer_msg: discord.Message = await self.bot.wait_for(
+                    "message", check=pred, timeout=10
+                )
             except asyncio.TimeoutError:
                 await msg.edit(content="Too slow!")
                 return
@@ -102,16 +104,18 @@ class Cashdrop(commands.Cog):
                     self.cache[message.guild.id]["credits_max"],
                 )
                 await msg.edit(
-                    content=f"Correct! You got {creds} {await bank.get_currency_name(guild=message.guild)}!"
+                    content=f"Correct! {answer_msg.author.mention} got {creds} {await bank.get_currency_name(guild=message.guild)}!"
                 )
-                await bank.deposit_credits(message.author, creds)
+                await bank.deposit_credits(answer_msg.author, creds)
         else:
             msg = await channel.send(
                 f"Some {await bank.get_currency_name(guild=message.guild)} have fallen, type `pickup` to pick them up!"
             )
-            pred = MessagePredicate.lower_contained_in("pickup", channel=channel, user=None)
+            pred = MessagePredicate.equal_to("pickup", channel=channel, user=None)
             try:
-                await self.bot.wait_for("message", check=pred, timeout=10)
+                pickup_msg: discord.Message = await self.bot.wait_for(
+                    "message", check=pred, timeout=10
+                )
             except asyncio.TimeoutError:
                 await msg.edit(content="Too slow!")
                 return
@@ -122,9 +126,9 @@ class Cashdrop(commands.Cog):
                     self.cache[message.guild.id]["credits_max"],
                 )
                 await msg.edit(
-                    content=f"You picked up {creds} {await bank.get_currency_name(guild=message.guild)}!"
+                    content=f"{pickup_msg.author.mention} picked up {creds} {await bank.get_currency_name(guild=message.guild)}!"
                 )
-                await bank.deposit_credits(message.author, creds)
+                await bank.deposit_credits(pickup_msg.author, creds)
 
     @commands.group(name="cashdrop", aliases=["cd"])
     @commands.guild_only()
